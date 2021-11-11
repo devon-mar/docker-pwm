@@ -1,7 +1,10 @@
 FROM docker.io/amd64/maven:3-openjdk-11 AS builder
+ARG PWM_TAG="master"
 
 RUN apt-get update -y && apt-get  -y --no-install-recommends install git && \
-    git clone https://github.com/pwm-project/pwm.git
+    git clone https://github.com/pwm-project/pwm.git && \
+	cd pwm && \
+    git checkout ${PWM_TAG}
 
 RUN cd pwm/ && \
     mvn package -Dmaven.test.skip=true && \
@@ -37,7 +40,7 @@ RUN apk add --no-cache xmlstarlet curl unzip && \
     apk del --purge curl
 
 # Retreive and install artifact from builder
-COPY --from=builder pwm/webapp/target/pwm-*.war /tmp/pwm.war 
+COPY --from=builder pwm/webapp/target/pwm-*.war /tmp/pwm.war
 
 RUN cd /tmp && \
     unzip /tmp/pwm.war -d  ${PWM_HOME} && \

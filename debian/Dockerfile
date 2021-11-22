@@ -1,5 +1,5 @@
-# Need a version based on buster/stretch for phantomjs packages
-FROM docker.io/maven:3.6-openjdk-11 AS builder
+# Build on amd64
+FROM docker.io/amd64/maven:3-openjdk-11 AS builder
 ARG PWM_TAG="master"
 
 RUN apt-get update -y && apt-get  -y --no-install-recommends install git && \
@@ -7,12 +7,8 @@ RUN apt-get update -y && apt-get  -y --no-install-recommends install git && \
     cd pwm && \
     git checkout ${PWM_TAG}
 
-
-# https://github.com/Medium/phantomjs#im-using-an-unsupported-version-of-linux-or-an-arm-processor-i-get-errors-about-unexpected-platform-or-architecture-what-do-i-do
-RUN apt-get install -y phantomjs
-
 RUN cd pwm/ && \
-    mvn package -Dmaven.test.skip=true -DskipTests=true && \
+    mvn package -Dmaven.test.skip=true && \
     ls -l webapp/target/
 
 ##################################################

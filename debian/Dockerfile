@@ -6,8 +6,12 @@ RUN apt-get update -y && apt-get  -y --no-install-recommends install git && \
     cd pwm && \
     git checkout ${PWM_TAG}
 
+
+# https://github.com/Medium/phantomjs#im-using-an-unsupported-version-of-linux-or-an-arm-processor-i-get-errors-about-unexpected-platform-or-architecture-what-do-i-do
+RUN apt-get install -y phantomjs
+
 RUN cd pwm/ && \
-    mvn package -Dmaven.test.skip=true && \
+    mvn package -Dmaven.test.skip=true -DskipTests=true && \
     ls -l webapp/target/
 
 ##################################################

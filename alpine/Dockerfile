@@ -12,7 +12,7 @@ RUN cd pwm/ && \
 
 ##################################################
 
-FROM tomcat:9-jre8-alpine
+FROM tomcat:9-jre11-alpine
 
 LABEL maintainer="Florian JUDITH <florian.judith.b@gmail.com>"
 

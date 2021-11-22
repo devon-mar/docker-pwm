@@ -1,7 +1,10 @@
-FROM docker.io/amd64/maven:3-openjdk-11 AS builder
+FROM docker.io/maven:3-openjdk-11 AS builder
+ARG PWM_TAG="master"
 
 RUN apt-get update -y && apt-get  -y --no-install-recommends install git && \
-    git clone https://github.com/pwm-project/pwm.git
+    git clone https://github.com/pwm-project/pwm.git && \
+    cd pwm && \
+    git checkout ${PWM_TAG}
 
 RUN cd pwm/ && \
     mvn package -Dmaven.test.skip=true && \
@@ -9,7 +12,7 @@ RUN cd pwm/ && \
 
 ##################################################
 
-FROM docker.io/amd64/tomcat:9-jre11-slim
+FROM docker.io/tomcat:9-jre11-slim
 
 LABEL maintainer="Florian JUDITH <florian.judith.b@gmail.com>"
 

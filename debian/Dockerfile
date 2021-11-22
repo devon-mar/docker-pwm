@@ -1,4 +1,5 @@
-FROM docker.io/maven:3-openjdk-11 AS builder
+# Need a version based on buster/stretch for phantomjs packages
+FROM docker.io/maven:3.6-openjdk-11 AS builder
 ARG PWM_TAG="master"
 
 RUN apt-get update -y && apt-get  -y --no-install-recommends install git && \
